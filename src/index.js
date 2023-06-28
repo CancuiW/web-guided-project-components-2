@@ -1,3 +1,4 @@
+import axios from "axios"
 // 👉 TASK 1- Test out the following endpoints:
 
 //  https://dog.ceo/api/breeds/image/random
@@ -8,27 +9,79 @@
 
 // 👉 TASK 2- Select the "entry point", the element
 // inside of which we'll inject our dog cards 
-const entryPoint = null
+const entryPoint = document.querySelector(".entry")
 
 
 // 👉 TASK 3- `dogCardMaker` takes an object and returns a Dog Card.
 // Use this function to build a Card, and append it to the entry point.
-function dogCardMaker({ imageURL, breed }) {
-  // instantiating the elements
-  /*
-    <div class="dog-card">
-      <img class="dog-image">
-      <h3>
-    </div>
-  */
-  // set class names, attributes and text
+/*
+   <div class="dog-card">
+     <img class="dog-image">
+     <h3>
+   </div>
+ */
+function dogCardMaker({ imageURL, breed}) {
 
-  // create the hierarchy
+  const card=document.createElement("div")
+  const img = document.createElement("img")
+  const h3 = document.createElement("h3")
+  card.className ="dog-card"
+  img.className ="dog-image"
+  img.src=imageURL
+  h3.textContent=`Breed: ${breed}`
+  card.appendChild(img)
+  card.appendChild(h3)
 
-  // add some interactivity
-
-  // never forget to return!
+  card.addEventListener("click",()=>{
+    card.classList.toggle("selected")
+  })
+ 
+   
+  return card
+  
 }
+
+
+
+// const butt=document.createElement("button")
+// butt.textContent="get some doggies"
+// butt.style.display="block"
+// butt.style.alignItems="center"
+// butt.style.width="100%"
+// document.querySelector(".container h3").prepend(butt)
+
+// for (let i=0; i<6;i++){
+//   axios.get("https://dog.ceo/api/breeds/image/random")
+//     .then(res => {
+//       const element = dogCardMaker({ imageURL: res.data.message, breed: "cancui" })
+//       entryPoint.appendChild(element)
+//     })
+//     .catch(err => {
+//       console.error(err)
+//     })
+//     .finally(() => {
+//       console.log("finished")
+//     })
+// }
+axios.get("https://dog.ceo/api/breeds/image/random/5")
+    .then(res => {
+      //console.log(res.data.message)
+      res.data.message.forEach((imgs)=> {
+        const element = dogCardMaker({ imageURL: imgs, breed: "cancui" })
+        entryPoint.appendChild(element)
+        
+      });
+      
+    })
+    .catch(err => {
+      console.error(err)
+    })
+    .finally(() => {
+      console.log("finished")
+    })
+
+
+
 
 
 // 👉 TASK 4- Bring the Axios library into the project using one of two methods:
